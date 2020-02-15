@@ -3,18 +3,17 @@ import React from "react";
 import "./navigation.style.scss";
 import logo from "../../assets/plant-dark.svg";
 import HomePage from "../../pages/homePage/HomePage.jsx";
-import NewPlantPage from '../../pages/newPlantPage/NewPlantPage';
-import ViewPlantPage from '../../pages/viewPlant/ViewPlantPage';
-import ConnectPlantsPage from "../../pages/ConnectPlantsPage";
-import LoginPage from '../../pages/loginPage/LoginPage';
+import NewPlantPage from "../../pages/newPlantPage/NewPlantPage";
+import ViewPlantPage from "../../pages/viewPlant/ViewPlantPage";
+import ConnectPlantsPage from "../../pages/plantsPage/ConnectPlantsPage";
+import LoginPage from "../../pages/loginPage/LoginPage";
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 
-
-class Navigation extends React.Component {
+class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,7 +60,6 @@ class Navigation extends React.Component {
           </Navbar.Collapse>
         </Navbar>
 
-  
         <Route
           path={this.state.routes.home.path}
           exact
@@ -78,4 +76,4 @@ class Navigation extends React.Component {
     );
   }
 }
-export default Navigation;
+export default Main;

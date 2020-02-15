@@ -2,7 +2,7 @@ import React from "react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import Navigation from "./components/navigation/Navigation.component";
+import Main from "./components/main/Main.component";
 
 import { Provider } from "react-redux";
 import store from "./store/store";
@@ -16,7 +16,7 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <div>
-          <Navigation />
+          <Main />
         </div>
       </Provider>
     );
