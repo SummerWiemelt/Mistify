@@ -1,0 +1,30 @@
+.card-container,
+.card-col {
+  padding: 1em;
+}
+.card-img {
+  position: relative;
+}
+.card {
+  height: 100%; // keeps the cards the same height - important 
+  width: 100%;
+}
+.button-parent {
+  display: flex; 
+  justify-content: flex-end; // keeps delete button to the right 
+}
+.delete-button {
+  border-radius: 15px;
+  width: 30px;
+  height: 30px;
+  padding: 0px;
+  z-index: 1;
+  position: absolute;
+}
+.bold {
+  font-weight: bold;
+}
+.view-plant-button {
+  width: 100%;
+}
+

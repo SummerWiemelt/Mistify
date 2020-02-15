@@ -1,21 +1,18 @@
 const express = require("express");
 const Firestore = require("@google-cloud/firestore");
-const bodyParser = require("body-parser"); // turns request body into a json object
 const Ajv = require("ajv"); // Validate body contents
+const cors = require("cors");
 
 const plantSchema = {
   type: "object",
   properties: {
-    "name": { "type": "string" },
-    "species": { "type": "string"},
-    "nickname": { "type": "string"},
-    "watering": { "type": "string"},
-    "species": { "type": "string"},
-
+    name: { type: "string" },
+    species: { type: "string" },
+    nickname: { type: "string" },
+    watering: { type: "string" },
+    species: { type: "string" }
   }
 };
-
-
 
 const db = new Firestore({
   projectId: "plant-app-266923",
@@ -25,7 +22,9 @@ const PLANT_COLLECTION = "plants";
 const plantsCollection = db.collection(PLANT_COLLECTION);
 
 const app = express();
-app.use(bodyParser());
+app.use(express.json());
+app.use(cors());
+app.options("*", cors());
 
 const NOT_FOUND_STATUS_CODE = 404;
 const NOT_FOUND_MESSAGE = "The specified document does not exist";
