@@ -1,15 +1,9 @@
-import React from 'react';
+import React from "react";
 
-
-class NewPlantPage extends React.Component {
+class NewEditPlantPage extends React.Component {
   render() {
-    return (
-        <div>
-            view plant page rendered 
-        </div>
-      
-    );
+    return <div>view plant page rendered</div>;
   }
 }
 
-export default NewPlantPage;
+export default NewEditPlantPage;

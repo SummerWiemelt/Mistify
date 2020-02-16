@@ -1,35 +1,36 @@
-import React from 'react';
+import React from "react";
 
-import './newPlantPage.style.scss';
+import "./newPlantPage.style.scss";
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
-// Object Constants
-const NAME_KEY = 'name';
-const SPECIES_KEY = 'species';
-const LOCATION_KEY = 'location';
-const DESCRIPTION_KEY = 'description';
-const WATERING_PREFERENCE_KEY = 'waterPreference';
-const SUN_PREFERENCE_KEY = 'sunPreference';
+// Object Property Constants
+const ID_KEY = "id";
+const NAME_KEY = "name";
+const SPECIES_KEY = "species";
+const LOCATION_KEY = "location";
+const DESCRIPTION_KEY = "description";
+const WATERING_PREFERENCE_KEY = "waterPreference";
+const SUN_PREFERENCE_KEY = "sunPreference";
 
 const WATERING_PREFERENCES = [
-  'When dry to touch',
-  'Thoroughly, until drained',
-  'Immersed in water',
-  'From bottom',
-  'Mist'
+  "When dry to touch",
+  "Thoroughly, until drained",
+  "Immersed in water",
+  "From bottom",
+  "Mist"
 ];
 
 const SUN_PREFERENCES = [
-  'Full Sun',
-  'Partial Sun',
-  'Partial Shade',
-  'Indirect Sun',
-  'Full Shade'
+  "Full Sun",
+  "Partial Sun",
+  "Partial Shade",
+  "Indirect Sun",
+  "Full Shade"
 ];
 
 function renderOptions(props) {
@@ -38,24 +39,32 @@ function renderOptions(props) {
   });
 }
 
-class NewPlantPage extends React.Component {
+class NewEditPlantPage extends React.Component {
   constructor() {
     super();
-    this.state = {
-      WATERING_PREFERENCE_KEY: WATERING_PREFERENCES[0],
-      SUN_PREFERENCE_KEY: SUN_PREFERENCES[0]
-    };
+    if (this.props && this.props.selectedPlant) {
+      // Edit flow
+      this.state = this.props.selectedPlant;
+    } else {
+      // New flow
+      let newState = {};
+      newState[WATERING_PREFERENCE_KEY] = WATERING_PREFERENCES[0];
+      newState[SUN_PREFERENCE_KEY] = SUN_PREFERENCES[0];
+      this.state = newState;
+    }
   }
 
-  onNewPlant = formEvent => {
+  onNewEditPlant = formEvent => {
     formEvent.preventDefault(); // Prevent page reload
-    console.log(formEvent.target.value);
   };
+
   handleInputChange = key => inputEvent => {
+    // Gets input from form
     let stateUpdate = {};
     stateUpdate[key] = inputEvent.target.value;
     this.setState(stateUpdate);
   };
+
   render() {
     console.log(this.state);
     return (
@@ -77,6 +86,7 @@ class NewPlantPage extends React.Component {
                 </Form.Label>
                 <Form.Control
                   onChange={this.handleInputChange(NAME_KEY)}
+                  defaultValue={this.state[NAME_KEY]}
                   required
                   type='name'
                   placeholder='Ex: "Bambis Velvet Vine" '
@@ -87,6 +97,7 @@ class NewPlantPage extends React.Component {
                 <Form.Label className='label'>Species</Form.Label>
                 <Form.Control
                   onChange={this.handleInputChange(SPECIES_KEY)}
+                  defaultValue={this.state[SPECIES_KEY]}
                   type='species'
                   placeholder='Ex: "Ruellia makoyana"'
                   maxLength='70'
@@ -96,6 +107,7 @@ class NewPlantPage extends React.Component {
                 <Form.Label className='label'>Location</Form.Label>
                 <Form.Control
                   onChange={this.handleInputChange(LOCATION_KEY)}
+                  defaultValue={this.state[LOCATION_KEY]}
                   type='location'
                   placeholder='Ex: "Upstairs office"'
                   maxLength='70'
@@ -109,6 +121,7 @@ class NewPlantPage extends React.Component {
                 <Form.Label className='label'>Description</Form.Label>
                 <Form.Control
                   onChange={this.handleInputChange(DESCRIPTION_KEY)}
+                  defaultValue={this.state[DESCRIPTION_KEY]}
                   as='textarea'
                   rows='3'
                   maxLength='300'
@@ -124,7 +137,9 @@ class NewPlantPage extends React.Component {
               <Form.Control
                 required
                 onChange={this.handleInputChange(WATERING_PREFERENCE_KEY)}
-                as='select'>
+                defaultValue={this.state[WATERING_PREFERENCE_KEY]}
+                as='select'
+              >
                 {renderOptions(WATERING_PREFERENCES)}
               </Form.Control>
             </div>
@@ -135,14 +150,24 @@ class NewPlantPage extends React.Component {
               <Form.Control
                 required
                 onChange={this.handleInputChange(SUN_PREFERENCE_KEY)}
-                as='select'>
+                defaultValue={this.state[SUN_PREFERENCE_KEY]}
+                as='select'
+              >
                 {renderOptions(SUN_PREFERENCES)}
               </Form.Control>
             </div>
           </Form.Row>
           <Form.Row className='submit-row'>
-            <Col><span className='required'>*</span>required</Col>
-            <Button className='submit-button label' variant='outline-dark' type='submit'>Submit</Button>
+            <Col>
+              <span className='required'>*</span>required
+            </Col>
+            <Button
+              className='submit-button label'
+              variant='outline-dark'
+              type='submit'
+            >
+              Submit
+            </Button>
           </Form.Row>
         </Form>
       </Container>
@@ -150,4 +175,4 @@ class NewPlantPage extends React.Component {
   }
 }
 
-export default NewPlantPage;
+export default NewEditPlantPage;

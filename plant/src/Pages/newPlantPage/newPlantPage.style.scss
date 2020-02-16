@@ -1,4 +1,4 @@
-$main-text: 'Poppins', sans-serif;
+$main-text: "Poppins", sans-serif;
 $required-color: #ff4d4d;
 .label {
   font-family: $main-text;
@@ -6,8 +6,8 @@ $required-color: #ff4d4d;
   margin-top: 2vh;
 }
 .required {
-    color: $required-color;
-    font-family: Roboto;
+  color: $required-color;
+  font-family: Roboto;
 }
 
 .new-plant-container {
@@ -19,9 +19,8 @@ $required-color: #ff4d4d;
   margin-bottom: 2em;
   .new-plant-title {
     @extend .label;
-    font-size: 1.2em;
+    font-size: 1.5em;
     padding: 0.5em 0.7em;
-    border: 1.5px solid black;
   }
 }
 
@@ -36,12 +35,12 @@ $required-color: #ff4d4d;
 }
 
 .submit-row {
-    justify-content: center;
-    margin-top: 2em;
-    .submit-button {
-        font-size: 1.3em;
-        border-radius: 0px;
-    }
+  justify-content: center;
+  margin-top: 2em;
+  .submit-button {
+    font-size: 1.3em;
+    border-radius: 0px;
+  }
 }
 
 @media (min-width: 576px) {
@@ -51,12 +50,12 @@ $required-color: #ff4d4d;
   .new-plant-title-row {
     margin-bottom: 3em;
     .new-plant-title {
-        font-size: 1.3em;
+      font-size: 1.3em;
     }
   }
 }
 @media (min-width: 768px) {
-    .submit-row {
-        justify-content: flex-end;
-    }
+  .submit-row {
+    justify-content: flex-end;
+  }
 }

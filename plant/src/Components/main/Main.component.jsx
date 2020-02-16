@@ -3,7 +3,7 @@ import React from "react";
 import "./navigation.style.scss";
 import logo from "../../assets/plant-dark.svg";
 import HomePage from "../../pages/homePage/HomePage.jsx";
-import NewPlantPage from "../../pages/newPlantPage/NewPlantPage";
+import NewEditPlantPage from "../../pages/newPlantPage/NewEditPlantPage";
 import ViewPlantPage from "../../pages/viewPlant/ViewPlantPage";
 import ConnectPlantsPage from "../../pages/plantsPage/ConnectPlantsPage";
 import LoginPage from "../../pages/loginPage/LoginPage";
@@ -70,7 +70,7 @@ class Main extends React.Component {
           render={() => <ConnectPlantsPage />}
         />
         <Route path={this.state.routes.login.path} render={() => <LoginPage />} />
-        <Route path='/newPlant' render={() => <NewPlantPage />} />
+        <Route path='/newPlant' render={() => <NewEditPlantPage />} />
         <Route path='/viewPlant' render={() => <ViewPlantPage />} />
       </Router>
     );
