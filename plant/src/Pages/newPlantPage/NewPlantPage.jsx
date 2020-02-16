@@ -1,35 +1,35 @@
-import React from "react";
+import React from 'react';
 
-import "./newPlantPage.style.scss";
+import './newPlantPage.style.scss';
 
-import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-import Container from "react-bootstrap/Container";
-// import Dropdown from "react-bootstrap/Dropdown";
-import Button from "react-bootstrap/Button";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 // Object Constants
-const NAME_KEY = "name";
-const SPECIES_KEY = "species";
-const LOCATION_KEY = "location";
-const DESCRIPTION_KEY = "description";
-const WATERING_PREFERENCE_KEY = "waterPreference";
-const SUN_PREFERENCE_KEY = "sunPreference";
+const NAME_KEY = 'name';
+const SPECIES_KEY = 'species';
+const LOCATION_KEY = 'location';
+const DESCRIPTION_KEY = 'description';
+const WATERING_PREFERENCE_KEY = 'waterPreference';
+const SUN_PREFERENCE_KEY = 'sunPreference';
 
 const WATERING_PREFERENCES = [
-  "When dry to touch",
-  "Thoroughly, until drained",
-  "Immersed in water",
-  "From bottom",
-  "Mist"
+  'When dry to touch',
+  'Thoroughly, until drained',
+  'Immersed in water',
+  'From bottom',
+  'Mist'
 ];
 
 const SUN_PREFERENCES = [
-  "Full Sun",
-  "Partial Sun",
-  "Partial Shade",
-  "Indirect Sun",
-  "Full Shade"
+  'Full Sun',
+  'Partial Sun',
+  'Partial Shade',
+  'Indirect Sun',
+  'Full Shade'
 ];
 
 function renderOptions(props) {
@@ -60,14 +60,21 @@ class NewPlantPage extends React.Component {
     console.log(this.state);
     return (
       <Container className='new-plant-container'>
+        <Row className='new-plant-title-row'>
+          <span className='new-plant-title'>Create a new plant</span>
+        </Row>
         <Form onSubmit={this.onNewPlant}>
           <Form.Row>
             <Col xs={12} md={6}>
-              <div className='label'>Upload image section</div>
+              <div className='label'>
+                Upload image section<span className='required'> *</span>
+              </div>
             </Col>
             <Col xs={12} md={6}>
               <Form.Group type='text' controlid='name'>
-                <Form.Label className='label'>Name</Form.Label>
+                <Form.Label className='label'>
+                  Name<span className='required'> *</span>
+                </Form.Label>
                 <Form.Control
                   onChange={this.handleInputChange(NAME_KEY)}
                   required
@@ -109,30 +116,33 @@ class NewPlantPage extends React.Component {
               </Form.Group>
             </Col>
           </Form.Row>
-          <Form.Row className='dropdown-row' controlid='wateringPreference'>
+          <Form.Row className='select-row' controlid='wateringPreference'>
             <div>
-              <Form.Label className='label'>Watering Preference</Form.Label>
+              <Form.Label className='label'>
+                Watering Preference<span className='required'> *</span>
+              </Form.Label>
               <Form.Control
+                required
                 onChange={this.handleInputChange(WATERING_PREFERENCE_KEY)}
-                as='select'
-              >
+                as='select'>
                 {renderOptions(WATERING_PREFERENCES)}
               </Form.Control>
             </div>
             <div>
               <Form.Label className='label' controlid='sunPreference'>
-                Sun Preference
+                Sun Preference<span className='required'> *</span>
               </Form.Label>
               <Form.Control
+                required
                 onChange={this.handleInputChange(SUN_PREFERENCE_KEY)}
-                as='select'
-              >
+                as='select'>
                 {renderOptions(SUN_PREFERENCES)}
               </Form.Control>
             </div>
           </Form.Row>
-          <Form.Row>
-            <Button type='submit'>Submit</Button>
+          <Form.Row className='submit-row'>
+            <Col><span className='required'>*</span>required</Col>
+            <Button className='submit-button label' variant='outline-dark' type='submit'>Submit</Button>
           </Form.Row>
         </Form>
       </Container>

@@ -1,16 +1,62 @@
-.new-plant-container {
-    margin-top: 3em;
-    background-color: #f8f9fa;
-    padding: 2em;
-}
+$main-text: 'Poppins', sans-serif;
+$required-color: #ff4d4d;
 .label {
-    font-weight: 600;
-    font-family: 'Poppins', sans-serif;
+  font-family: $main-text;
+  font-weight: bold;
+  margin-top: 2vh;
 }
-.dropdown {
-    width: 10em;
+.required {
+    color: $required-color;
+    font-family: Roboto;
 }
-.dropdown-row {
-    padding-top: 1em;
-    justify-content: space-around;
+
+.new-plant-container {
+  background-color: #f8f9fa;
+  padding: 2em;
+}
+.new-plant-title-row {
+  justify-content: center;
+  margin-bottom: 2em;
+  .new-plant-title {
+    @extend .label;
+    font-size: 1.2em;
+    padding: 0.5em 0.7em;
+    border: 1.5px solid black;
+  }
+}
+
+.select-row {
+  justify-content: space-evenly;
+  .form-label {
+    margin-top: 1em;
+  }
+  select.form-control {
+    width: 200px;
+  }
+}
+
+.submit-row {
+    justify-content: center;
+    margin-top: 2em;
+    .submit-button {
+        font-size: 1.3em;
+        border-radius: 0px;
+    }
+}
+
+@media (min-width: 576px) {
+  .new-plant-container {
+    margin-top: 3em;
+  }
+  .new-plant-title-row {
+    margin-bottom: 3em;
+    .new-plant-title {
+        font-size: 1.3em;
+    }
+  }
+}
+@media (min-width: 768px) {
+    .submit-row {
+        justify-content: flex-end;
+    }
 }
