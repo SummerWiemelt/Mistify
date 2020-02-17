@@ -1,18 +1,6 @@
 const express = require("express");
 const Firestore = require("@google-cloud/firestore");
-const Ajv = require("ajv"); // Validate body contents
 const cors = require("cors");
-
-const plantSchema = {
-  type: "object",
-  properties: {
-    name: { type: "string" },
-    species: { type: "string" },
-    nickname: { type: "string" },
-    watering: { type: "string" },
-    species: { type: "string" }
-  }
-};
 
 const db = new Firestore({
   projectId: "plant-app-266923",
@@ -26,6 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.options("*", cors());
 
+const RESOURCE_CREATED = 201;
 const NOT_FOUND_STATUS_CODE = 404;
 const NOT_FOUND_MESSAGE = "The specified document does not exist";
 const APPLICATION_FAILURE = 500;
@@ -33,6 +22,13 @@ function makeErrorResponse(messageIn) {
   return {
     error: messageIn
   };
+}
+
+function cleanInputBody(plant) {
+  if ("id" in plant) {
+    delete plant.id;
+  }
+  return plant;
 }
 
 app.get("/", (req, res) => {
@@ -98,10 +94,11 @@ app.get("/plant/:plantid", (req, res) => {
 // Update a plant by ID
 app.put("/plant/:plantid", (req, res) => {
   const plantRef = plantsCollection.doc(req.params.plantid);
+  const modifiedPlant = cleanInputBody(req.body);
   plantRef
-    .update(req.body)
-    .then(doc => {
-      res.send();
+    .update(modifiedPlant)
+    .then(docRef => {
+      res.send(docRef.id);
     })
     .catch(err => {
       res.status(APPLICATION_FAILURE);
@@ -113,11 +110,12 @@ app.put("/plant/:plantid", (req, res) => {
 
 // Create a plant
 app.post("/plant", (req, res) => {
-  newPlant = req.body;
+  const newPlant = cleanInputBody(req.body);
   plantsCollection
     .add(newPlant)
-    .then(ref => {
-      res.send();
+    .then(docRef => {
+      res.status(RESOURCE_CREATED);
+      res.send(docRef.id);
     })
     .catch(err => {
       res.status(APPLICATION_FAILURE);
@@ -132,8 +130,9 @@ app.delete("/plant/:plantid", (req, res) => {
   const plantRef = plantsCollection.doc(req.params.plantid);
   plantRef
     .delete(req.body)
-    .then(doc => {
-      res.send();
+    .then(writeResult => {
+      // {writeResult} Delete doesn't return doc ref
+      res.send(req.params.plantid);
     })
     .catch(err => {
       res.status(APPLICATION_FAILURE);

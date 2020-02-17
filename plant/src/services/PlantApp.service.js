@@ -1,30 +1,45 @@
-import store from "../store/store";
+import store from "../globals/store";
+import history from "../globals/history";
 import { loadingPlants, loadingPlantsError, loadedPlants } from "../actions/actions";
 import { PLANTS_API_HOST_ADDRESS } from "../config";
 
 // Object Property Constants
-class Plant {
-  setId(newId) {
+export function Plant() {
+  this.id = "";
+  this.name = "";
+  this.species = "";
+  this.location = "";
+  this.description = "";
+  this.wateringPreference = "";
+  this.sunPreference = "";
+  this.setId = newId => {
     this.id = newId;
-  }
-  setName(newName) {
-    this.name = newName;
-  }
-  setSpecies(newSpecies) {
+    return this;
+  };
+  this.setName = newName => {
+    this.name = newName; //asigns newName to this.name
+    return this;
+  };
+  this.setSpecies = newSpecies => {
     this.species = newSpecies;
-  }
-  setLocation(newLocation) {
+    return this;
+  };
+  this.setLocation = newLocation => {
     this.location = newLocation;
-  }
-  setDescription(newDescription) {
+    return this;
+  };
+  this.setDescription = newDescription => {
     this.description = newDescription;
-  }
-  setWateringPreference(newWateringPreference) {
+    return this;
+  };
+  this.setWateringPreference = newWateringPreference => {
     this.waterPreference = newWateringPreference;
-  }
-  setSunPreference(newSunPreference) {
+    return this;
+  };
+  this.setSunPreference = newSunPreference => {
     this.sunPreference = newSunPreference;
-  }
+    return this;
+  };
 }
 
 export const getAllPlants = async () => {
@@ -51,4 +66,44 @@ export const getAllPlants = async () => {
     });
 };
 
-export const createNewPlant = async () => {};
+export const createNewPlant = async plant => {
+  console.log(plant);
+  console.log(JSON.stringify(plant));
+  const request = new Request(`${PLANTS_API_HOST_ADDRESS}/plant`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(plant)
+  });
+
+  return await fetch(request)
+    .then(response => {
+      return {
+        success: true
+      };
+    })
+    .catch(err => {
+      console.log("ERROR: ", err);
+      return {
+        success: false,
+        errorMessage: "Failed to create new plant"
+      };
+    });
+};
+
+export const deletePlant = async plantId => {
+  const request = new Request(`${PLANTS_API_HOST_ADDRESS}/plant/${plantId}`, {
+    method: "DELETE"
+  });
+
+  return await fetch(request)
+    .then(response => {
+      getAllPlants();
+    })
+    .catch(err => {
+      console.log("ERROR: ", err);
+      store.dispatch(loadingPlantsError("Failed to delete plant"));
+    });
+};

@@ -5,12 +5,18 @@ import AddSearch from "../../components/addSearch/AddSearch.component";
 
 import Spinner from "react-bootstrap/Spinner";
 
+import { getAllPlants } from "../../services/PlantApp.service";
+
 class PlantsPage extends React.Component {
   constructor() {
     super();
     this.state = {
       searchFilter: null
     };
+  }
+
+  componentDidMount() {
+    getAllPlants();
   }
 
   onSearchChanged = inputEvent => {
@@ -35,21 +41,26 @@ class PlantsPage extends React.Component {
   };
 
   render() {
+    let loadContent = () => {
+      if (this.props.error) {
+        return <div>{this.props.error}</div>;
+      }
+      if (!this.props.isLoaded) {
+        return (
+          <Spinner animation='border' role='status'>
+            <span className='sr-only'>Loading...</span>
+          </Spinner>
+        );
+      } else {
+        return <ListPlants plants={this.filterResults()} />;
+      }
+    };
     console.log(this.props);
-    if (this.props.error) {
-      return <div>{this.props.error}</div>;
-    }
-    if (!this.props.isLoaded) {
-      return (
-        <Spinner animation='border' role='status'>
-          <span className='sr-only'>Loading...</span>
-        </Spinner>
-      );
-    }
+
     return (
       <div>
         <AddSearch onSearchInputChange={this.onSearchChanged} />
-        <ListPlants plants={this.filterResults()} />
+        {loadContent()}
       </div>
     );
   }

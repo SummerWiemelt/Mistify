@@ -5,13 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Main from "./components/main/Main.component";
 
 import { Provider } from "react-redux";
-import store from "./store/store";
-import { getAllPlants } from "./services/PlantApp.service";
+import store from "./globals/store";
 
 class App extends React.Component {
-  componentDidMount() {
-    getAllPlants();
-  }
   render() {
     return (
       <Provider store={store}>

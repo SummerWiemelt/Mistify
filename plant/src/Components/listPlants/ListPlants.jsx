@@ -2,6 +2,7 @@ import React from "react";
 
 import "./plantCard.style.scss";
 import plantImage from "../../assets/plant-test.jpg";
+import { deletePlant } from "../../services/PlantApp.service";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -13,14 +14,23 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Link } from "react-router-dom";
 
 class ListPlants extends React.Component {
+  onDeletePlant = plant => () => {
+    deletePlant(plant.id);
+  };
+
   render() {
+    console.log("test");
     if (this.props) {
       const plants = this.props.plants.map(plant => {
         return (
-          <Col key={plant.name} className='card-col' /* test xl={3} */ lg={4} md={6}>
+          <Col key={plant.id} className='card-col' lg={4} md={6}>
             <Card className='card'>
               <div className='button-parent'>
-                <Button className='delete-button' variant='outline-dark'>
+                <Button
+                  onClick={this.onDeletePlant(plant)}
+                  className='delete-button'
+                  variant='outline-dark'
+                >
                   x
                 </Button>
               </div>
@@ -44,8 +54,8 @@ class ListPlants extends React.Component {
               </Card.Body>
               <Card.Footer>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{plant.watering}</ListGroup.Item>
-                  <ListGroup.Item>{plant.sunlight}</ListGroup.Item>
+                  <ListGroup.Item>{plant.waterPreference}</ListGroup.Item>
+                  <ListGroup.Item>{plant.sunPreference}</ListGroup.Item>
                 </ListGroup>
               </Card.Footer>
               <Link to='/viewPlant'>

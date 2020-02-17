@@ -13,6 +13,8 @@ import Nav from "react-bootstrap/Nav";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 
+import history from "../../globals/history";
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -26,7 +28,7 @@ class Main extends React.Component {
   }
   render() {
     return (
-      <Router>
+      <Router history={history}>
         <Navbar
           className='navbar'
           collapseOnSelect
@@ -70,7 +72,7 @@ class Main extends React.Component {
           render={() => <ConnectPlantsPage />}
         />
         <Route path={this.state.routes.login.path} render={() => <LoginPage />} />
-        <Route path='/newPlant' render={() => <NewEditPlantPage />} />
+        <Route path='/newPlant' component={NewEditPlantPage} />
         <Route path='/viewPlant' render={() => <ViewPlantPage />} />
       </Router>
     );
