@@ -19,7 +19,7 @@ $required-color: #ff4d4d;
   margin-bottom: 2em;
   .new-plant-title {
     @extend .label;
-    font-size: 1.5em;
+    font-size: 1.7em;
     padding: 0.5em 0.7em;
   }
 }
@@ -49,9 +49,6 @@ $required-color: #ff4d4d;
   }
   .new-plant-title-row {
     margin-bottom: 3em;
-    .new-plant-title {
-      font-size: 1.3em;
-    }
   }
 }
 @media (min-width: 768px) {

@@ -3,8 +3,8 @@ import React from "react";
 import "./navigation.style.scss";
 import logo from "../../assets/plant-dark.svg";
 import HomePage from "../../pages/homePage/HomePage.jsx";
-import NewEditPlantPage from "../../pages/newPlantPage/NewEditPlantPage";
-import ViewPlantPage from "../../pages/viewPlant/ViewPlantPage";
+import NewEditPlantPage from "../../pages/newPlantPage/NewPlantPage";
+import ViewPlantPage from "../../pages/editPlant/EditPlantPage";
 import ConnectPlantsPage from "../../pages/plantsPage/ConnectPlantsPage";
 import LoginPage from "../../pages/loginPage/LoginPage";
 

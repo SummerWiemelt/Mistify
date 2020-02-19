@@ -60,7 +60,7 @@ class ListPlants extends React.Component {
               </Card.Footer>
               <Link to='/viewPlant'>
                 <Button className='view-plant-button' variant='outline-dark'>
-                  View Plant
+                  Edit Plant
                 </Button>
               </Link>
             </Card>
