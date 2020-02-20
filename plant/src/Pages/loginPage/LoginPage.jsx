@@ -1,17 +1,15 @@
 // TO DO:
 // Change navagation 'login' to 'logout' when user is currently logged in
 
-import React from 'react';
+import React from "react";
 
-import './LoginPage.style.scss';
+import "./LoginPage.style.scss";
 
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
-
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
 
 class LoginPage extends React.Component {
-
   render() {
     return (
       <Container className='login-container'>
@@ -19,11 +17,7 @@ class LoginPage extends React.Component {
         <Form>
           <Form.Group controlId='formBasicEmail'>
             <Form.Label className='bold'>Email address</Form.Label>
-            <Form.Control
-              id='loginEmail'
-              type='email'
-              placeholder='Enter email'
-            />
+            <Form.Control id='loginEmail' type='email' placeholder='Enter email' />
           </Form.Group>
 
           <Form.Group controlId='formBasicPassword'>
@@ -38,14 +32,16 @@ class LoginPage extends React.Component {
             id='btnLogin'
             variant='outline-dark'
             type='submit'
-            className='login-btn bold'>
+            className='login-btn bold'
+          >
             Login
           </Button>
           <Button
             id='btnSignUp'
             variant='outline-dark'
             type='submit'
-            className='login-btn bold'>
+            className='login-btn bold'
+          >
             Sign Up
           </Button>
         </Form>

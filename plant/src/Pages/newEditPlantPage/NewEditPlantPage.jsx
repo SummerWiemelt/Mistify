@@ -1,6 +1,5 @@
 import React from "react";
 
-
 import history from "../../globals/history";
 import "./newEditPlantPage.style.scss";
 import { Plant, createNewPlant } from "../../services/PlantApp.service";
@@ -29,14 +28,12 @@ const SUN_PREFERENCES = [
   "Full Shade"
 ];
 
-
-// maps through dropdown options 
+// maps through dropdown options
 function renderOptions(props) {
   return props.map(option => {
     return <option key={option}>{option}</option>;
   });
 }
-
 
 class NewEditPlantPage extends React.Component {
   constructor() {
@@ -51,7 +48,7 @@ class NewEditPlantPage extends React.Component {
     } else {
       // New flow- creating new plant
       let newPlant = new Plant();
-      
+
       //default dropdown
       newPlant.setSunPreference(SUN_PREFERENCES[0]);
       newPlant.setWateringPreference(WATERING_PREFERENCES[0]);
@@ -72,11 +69,11 @@ class NewEditPlantPage extends React.Component {
     if (this.state.plant.id) {
       // Modify / Edit plant
     } else {
-      // createNewPlant from PlantApp.service 
+      // createNewPlant from PlantApp.service
       createNewPlant(this.state.plant).then(result => {
         if (result.success) {
-          // pushes new plant to plants 
-          this.props.history.push("/plants"); 
+          // pushes new plant to plants
+          this.props.history.push("/plants");
         } else {
           this.setState({
             isLoading: false,
@@ -95,12 +92,26 @@ class NewEditPlantPage extends React.Component {
     });
   };
 
+  onPlantImageChanged = event => {
+    //files is defined, and there's at least one
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = e => {
+        this.state.plant.setBase64String(e.target.result);
+        this.setState({
+          plant: this.state.plant
+        });
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  };
+
   render() {
     if (this.state.error) {
       return <div>{this.state.error}</div>;
     } else if (this.state.isLoading) {
       return (
-        <Spinner variant="secondary" animation='border' role='status'>
+        <Spinner variant='secondary' animation='border' role='status'>
           <span className='sr-only'>Loading...</span>
         </Spinner>
       );
@@ -116,6 +127,14 @@ class NewEditPlantPage extends React.Component {
                 <div className='label'>
                   Upload image section<span className='required'> *</span>
                 </div>
+                <label htmlFor='plantFile'>Select an image:</label>
+                <input
+                  onChange={this.onPlantImageChanged}
+                  type='file'
+                  id='plantFile'
+                  name='plantImage'
+                />
+                {renderPlantImage(this.state.plant)}
               </Col>
               <Col xs={12} md={6}>
                 <Form.Group type='text' controlid='name'>
@@ -217,6 +236,20 @@ class NewEditPlantPage extends React.Component {
         </Container>
       );
     }
+  }
+}
+
+function renderPlantImage(plant) {
+  if (!plant) {
+    return null;
+  }
+  let imageBase64String = plant.getBase64String();
+  if (imageBase64String && imageBase64String.length > 0) {
+    return <img id='profileImage' src={imageBase64String} className='center' />;
+  } else if (plant.main_img_url && plant.main_img_url.length > 0) {
+    return <img id='profileImage' src={plant.main_img_url} className='center' />;
+  } else {
+    return null;
   }
 }
 

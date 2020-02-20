@@ -23,7 +23,12 @@ $required-color: #ff4d4d;
     padding: 0.5em 0.7em;
   }
 }
-
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
 .select-row {
   justify-content: space-evenly;
   .form-label {
@@ -56,3 +61,5 @@ $required-color: #ff4d4d;
     justify-content: flex-end;
   }
 }
+
+

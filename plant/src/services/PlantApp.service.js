@@ -12,6 +12,7 @@ export function Plant() {
   this.description = "";
   this.wateringPreference = "";
   this.sunPreference = "";
+  this.main_img_url = "";
   this.setId = newId => {
     this.id = newId;
     return this;
@@ -39,6 +40,15 @@ export function Plant() {
   this.setSunPreference = newSunPreference => {
     this.sunPreference = newSunPreference;
     return this;
+  };
+
+  // Local closure to prevent serialization
+  let imageBase64String = "";
+  this.setBase64String = base64String => {
+    imageBase64String = base64String;
+  };
+  this.getBase64String = () => {
+    return imageBase64String;
   };
 }
 

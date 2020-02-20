@@ -51,17 +51,10 @@ class Main extends React.Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <Route
-          path='/'
-          exact
-          render={() => <HomePage />}
-        />
-        <Route
-          path='/plants'
-          render={() => <ConnectPlantsPage />}
-        />
+        <Route path='/' exact render={() => <HomePage />} />
+        <Route path='/plants' render={() => <ConnectPlantsPage />} />
         <Route path='/login' render={() => <LoginPage />} />
-        <Route path='/newPlant' render={() => <NewEditPlantPage/>} />
+        <Route path='/newPlant' render={props => <NewEditPlantPage {...props} />} />
       </Router>
     );
   }
