@@ -1,3 +1,20 @@
+export const LOGIN_USER = "LOGIN_USER";
+
+export const loginUser = currentUser => {
+  return {
+    type: LOGIN_USER,
+    currentUser
+  };
+};
+
+export const LOGOUT_USER = "LOGOUT_USER";
+
+export const logoutUser = () => {
+  return {
+    type: LOGOUT_USER
+  };
+};
+
 export const LOADING_PLANTS_ERROR = "LOADING_PLANTS_ERROR";
 
 export const loadingPlantsError = errorMessage => {
@@ -23,5 +40,3 @@ export const loadedPlants = plants => {
     plants
   };
 };
-
-

@@ -1,10 +1,16 @@
 import {
   LOADED_PLANTS,
   LOADING_PLANTS,
-  LOADING_PLANTS_ERROR
+  LOADING_PLANTS_ERROR,
+  LOGIN_USER,
+  LOGOUT_USER
 } from "../actions/actions";
 
 const defaultState = {
+  user: {
+    loggedIn: false,
+    currentUser: null
+  },
   plants: {
     error: null,
     isLoaded: false,
@@ -38,10 +44,21 @@ export const plantApp = (state, action) => {
           items: action.plants
         }
       });
-      
+    case LOGIN_USER:
+      return Object.assign({}, state, {
+        user: {
+          loggedIn: true,
+          currentUser: action.currentUser
+        }
+      });
+    case LOGOUT_USER:
+      return Object.assign({}, state, {
+        user: {
+          loggedIn: false,
+          currentUser: null
+        }
+      });
     default:
-      return defaultState; 
-  } 
+      return defaultState;
+  }
 };
-
-

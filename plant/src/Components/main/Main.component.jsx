@@ -10,10 +10,12 @@ import LoginPage from "../../pages/loginPage/LoginPage";
 
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
+import PrivateRoute from "../privateRoute/PrivateRoute";
 
 import history from "../../globals/history";
+import ConnectPrivateRoute from "../privateRoute/ConnectPrivateRoute";
 
 class Main extends React.Component {
   render() {
@@ -51,10 +53,18 @@ class Main extends React.Component {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <Route path='/' exact render={() => <HomePage />} />
-        <Route path='/plants' render={() => <ConnectPlantsPage />} />
-        <Route path='/login' render={() => <LoginPage />} />
-        <Route path='/newPlant' render={props => <NewEditPlantPage {...props} />} />
+        <Switch>
+          <Route path='/' exact render={() => <HomePage />} />
+          <Route path='/login' render={() => <LoginPage />} />
+          <ConnectPrivateRoute
+            path='/plants'
+            render={props => <ConnectPlantsPage {...props} />}
+          />
+          <ConnectPrivateRoute
+            path='/newPlant'
+            render={props => <NewEditPlantPage {...props} />}
+          />
+        </Switch>
       </Router>
     );
   }

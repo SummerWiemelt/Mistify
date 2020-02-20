@@ -6,6 +6,7 @@ import AddSearch from "../../components/addSearch/AddSearch.component";
 import Spinner from "react-bootstrap/Spinner";
 
 import { getAllPlants } from "../../services/PlantApp.service";
+import firebase from "firebase";
 
 class PlantsPage extends React.Component {
   constructor() {
@@ -41,13 +42,14 @@ class PlantsPage extends React.Component {
   };
 
   render() {
+    console.log("rendering plants");
     let loadContent = () => {
       if (this.props.error) {
         return <div>{this.props.error}</div>;
       }
       if (!this.props.isLoaded) {
         return (
-          <Spinner variant="secondary" animation='border' role='status'>
+          <Spinner variant='secondary' animation='border' role='status'>
             <span className='sr-only'>Loading...</span>
           </Spinner>
         );
@@ -55,8 +57,6 @@ class PlantsPage extends React.Component {
         return <ListPlants plants={this.filterResults()} />;
       }
     };
-    console.log(this.props);
-
     return (
       <div>
         <AddSearch onSearchInputChange={this.onSearchChanged} />
