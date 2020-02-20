@@ -1,10 +1,10 @@
 import React from "react";
 
-import "./navigation.style.scss";
+import "./main.style.scss";
 import logo from "../../assets/plant-dark.svg";
 import HomePage from "../../pages/homePage/HomePage.jsx";
-import NewEditPlantPage from "../../pages/newPlantPage/NewPlantPage";
-import ViewPlantPage from "../../pages/editPlant/EditPlantPage";
+import NewEditPlantPage from "../../pages/newEditPlantPage/NewEditPlantPage";
+
 import ConnectPlantsPage from "../../pages/plantsPage/ConnectPlantsPage";
 import LoginPage from "../../pages/loginPage/LoginPage";
 
@@ -16,16 +16,6 @@ import { LinkContainer } from "react-router-bootstrap";
 import history from "../../globals/history";
 
 class Main extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      routes: {
-        home: { title: "Mistify", path: "/" },
-        plants: { title: "Plants", path: "/plants" },
-        login: { title: "Login", path: "/login" }
-      }
-    };
-  }
   render() {
     return (
       <Router history={history}>
@@ -36,7 +26,7 @@ class Main extends React.Component {
           bg='light'
           variant='light'
         >
-          <LinkContainer to={this.state.routes.home.path}>
+          <LinkContainer to='/'>
             <Navbar.Brand>
               {" "}
               <img
@@ -46,34 +36,32 @@ class Main extends React.Component {
                 className='d-inline-block align-top nav-logo'
                 alt='logo'
               />
-              <span className='nav-title'>{this.state.routes.home.title}</span>
+              <span className='nav-title'>Mystify</span>
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='responsive-navbar-nav' />
           <Navbar.Collapse id='responsive-navbar-nav'>
             <Nav className='ml-auto'>
-              <LinkContainer to={this.state.routes.plants.path}>
-                <Nav.Link>{this.state.routes.plants.title}</Nav.Link>
+              <LinkContainer to='/plants'>
+                <Nav.Link>Plants</Nav.Link>
               </LinkContainer>
-              <LinkContainer to={this.state.routes.login.path}>
-                <Nav.Link>{this.state.routes.login.title}</Nav.Link>
+              <LinkContainer to='/login'>
+                <Nav.Link>Login</Nav.Link>
               </LinkContainer>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-
         <Route
-          path={this.state.routes.home.path}
+          path='/'
           exact
           render={() => <HomePage />}
         />
         <Route
-          path={this.state.routes.plants.path}
+          path='/plants'
           render={() => <ConnectPlantsPage />}
         />
-        <Route path={this.state.routes.login.path} render={() => <LoginPage />} />
-        <Route path='/newPlant' component={NewEditPlantPage} />
-        <Route path='/viewPlant' render={() => <ViewPlantPage />} />
+        <Route path='/login' render={() => <LoginPage />} />
+        <Route path='/newPlant' render={() => <NewEditPlantPage/>} />
       </Router>
     );
   }

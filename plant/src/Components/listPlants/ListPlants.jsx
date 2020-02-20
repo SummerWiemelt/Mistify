@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./plantCard.style.scss";
+import "./listPlants.style.scss";
 import plantImage from "../../assets/plant-test.jpg";
 import { deletePlant } from "../../services/PlantApp.service";
 
@@ -14,13 +14,15 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Link } from "react-router-dom";
 
 class ListPlants extends React.Component {
+  // delete plant service 
   onDeletePlant = plant => () => {
     deletePlant(plant.id);
   };
 
+  // card component 
   render() {
-    console.log("test");
     if (this.props) {
+      // mapping through the plants in the database
       const plants = this.props.plants.map(plant => {
         return (
           <Col key={plant.id} className='card-col' lg={4} md={6}>
@@ -58,7 +60,7 @@ class ListPlants extends React.Component {
                   <ListGroup.Item>{plant.sunPreference}</ListGroup.Item>
                 </ListGroup>
               </Card.Footer>
-              <Link to='/viewPlant'>
+              <Link to='/newPlant/'>
                 <Button className='view-plant-button' variant='outline-dark'>
                   Edit Plant
                 </Button>

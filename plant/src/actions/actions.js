@@ -24,11 +24,4 @@ export const loadedPlants = plants => {
   };
 };
 
-export const INITIALIZE_GUEST_STORE = "INITIALIZE_GUEST_STORE";
 
-export const initializeGuestStore = newStore => {
-  return {
-    type: INITIALIZE_GUEST_STORE,
-    newStore
-  };
-};

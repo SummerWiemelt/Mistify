@@ -1,6 +1,8 @@
 import React from "react";
 
-import "./newPlantPage.style.scss";
+
+import history from "../../globals/history";
+import "./newEditPlantPage.style.scss";
 import { Plant, createNewPlant } from "../../services/PlantApp.service";
 
 import Container from "react-bootstrap/Container";
@@ -11,14 +13,6 @@ import Button from "react-bootstrap/Button";
 import Spinner from "react-bootstrap/Spinner";
 
 // Object Property Constants
-const ID_KEY = "id";
-const NAME_KEY = "name";
-const SPECIES_KEY = "species";
-const LOCATION_KEY = "location";
-const DESCRIPTION_KEY = "description";
-const WATERING_PREFERENCE_KEY = "waterPreference";
-const SUN_PREFERENCE_KEY = "sunPreference";
-
 const WATERING_PREFERENCES = [
   "When dry to touch",
   "Thoroughly, until drained",
@@ -35,11 +29,14 @@ const SUN_PREFERENCES = [
   "Full Shade"
 ];
 
+
+// maps through dropdown options 
 function renderOptions(props) {
   return props.map(option => {
     return <option key={option}>{option}</option>;
   });
 }
+
 
 class NewEditPlantPage extends React.Component {
   constructor() {
@@ -54,6 +51,8 @@ class NewEditPlantPage extends React.Component {
     } else {
       // New flow- creating new plant
       let newPlant = new Plant();
+      
+      //default dropdown
       newPlant.setSunPreference(SUN_PREFERENCES[0]);
       newPlant.setWateringPreference(WATERING_PREFERENCES[0]);
       this.state = {
@@ -73,9 +72,11 @@ class NewEditPlantPage extends React.Component {
     if (this.state.plant.id) {
       // Modify / Edit plant
     } else {
+      // createNewPlant from PlantApp.service 
       createNewPlant(this.state.plant).then(result => {
         if (result.success) {
-          this.props.history.push("/plants");
+          // pushes new plant to plants 
+          this.props.history.push("/plants"); 
         } else {
           this.setState({
             isLoading: false,
@@ -99,7 +100,7 @@ class NewEditPlantPage extends React.Component {
       return <div>{this.state.error}</div>;
     } else if (this.state.isLoading) {
       return (
-        <Spinner animation='border' role='status'>
+        <Spinner variant="secondary" animation='border' role='status'>
           <span className='sr-only'>Loading...</span>
         </Spinner>
       );
@@ -123,7 +124,7 @@ class NewEditPlantPage extends React.Component {
                   </Form.Label>
                   <Form.Control
                     onChange={this.handleInputChange(this.state.plant.setName)}
-                    defaultValue={this.state[NAME_KEY]}
+                    defaultValue={this.state.name}
                     required
                     type='name'
                     placeholder='Ex: "Bambis Velvet Vine" '
@@ -134,7 +135,7 @@ class NewEditPlantPage extends React.Component {
                   <Form.Label className='label'>Species</Form.Label>
                   <Form.Control
                     onChange={this.handleInputChange(this.state.plant.setSpecies)}
-                    defaultValue={this.state[SPECIES_KEY]}
+                    defaultValue={this.state.species}
                     type='species'
                     placeholder='Ex: "Ruellia makoyana"'
                     maxLength='70'
@@ -144,7 +145,7 @@ class NewEditPlantPage extends React.Component {
                   <Form.Label className='label'>Location</Form.Label>
                   <Form.Control
                     onChange={this.handleInputChange(this.state.plant.setLocation)}
-                    defaultValue={this.state[LOCATION_KEY]}
+                    defaultValue={this.state.location}
                     type='location'
                     placeholder='Ex: "Upstairs office"'
                     maxLength='70'
@@ -160,7 +161,7 @@ class NewEditPlantPage extends React.Component {
                     onChange={this.handleInputChange(
                       this.state.plant.setDescription
                     )}
-                    defaultValue={this.state[DESCRIPTION_KEY]}
+                    defaultValue={this.state.description}
                     as='textarea'
                     rows='3'
                     maxLength='300'
@@ -178,7 +179,7 @@ class NewEditPlantPage extends React.Component {
                   onChange={this.handleInputChange(
                     this.state.plant.setWateringPreference
                   )}
-                  defaultValue={this.state[WATERING_PREFERENCE_KEY]}
+                  defaultValue={this.state.wateringPreference}
                   as='select'
                 >
                   {renderOptions(WATERING_PREFERENCES)}
@@ -193,7 +194,7 @@ class NewEditPlantPage extends React.Component {
                   onChange={this.handleInputChange(
                     this.state.plant.setSunPreference
                   )}
-                  defaultValue={this.state[SUN_PREFERENCE_KEY]}
+                  defaultValue={this.state.sunPreference}
                   as='select'
                 >
                   {renderOptions(SUN_PREFERENCES)}

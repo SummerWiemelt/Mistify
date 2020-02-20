@@ -1,6 +1,5 @@
 import {
   LOADED_PLANTS,
-  INITIALIZE_GUEST_STORE,
   LOADING_PLANTS,
   LOADING_PLANTS_ERROR
 } from "../actions/actions";
@@ -39,14 +38,10 @@ export const plantApp = (state, action) => {
           items: action.plants
         }
       });
-    case INITIALIZE_GUEST_STORE:
-      return action.newStore;
+      
     default:
-      return defaultState;
-  }
+      return defaultState; 
+  } 
 };
 
-// plants(null, null); // return defaultState
-// plants(defaultState, { type: "ADD_PLANT", plant: {} }); // return { plants: [{}] }
-// plants({ plants: [{}] }, { type: "ADD_FILTER", filter: "byIdblah" }); return { plants: [{}], filter: "byIdBlah" }
-// plants({ plants: [{}] }, { type: "INIT_GUEST_STORE", newStore: { chocolate } }); return { chocolate }
+

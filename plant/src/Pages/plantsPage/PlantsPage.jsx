@@ -47,7 +47,7 @@ class PlantsPage extends React.Component {
       }
       if (!this.props.isLoaded) {
         return (
-          <Spinner animation='border' role='status'>
+          <Spinner variant="secondary" animation='border' role='status'>
             <span className='sr-only'>Loading...</span>
           </Spinner>
         );
