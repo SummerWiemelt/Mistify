@@ -22,7 +22,9 @@ var config = {
 };
 firebase.initializeApp(config);
 firebase.auth().onAuthStateChanged(function(user) {
-  store.dispatch(loginUser(user));
+  if (user) {
+    store.dispatch(loginUser(user));
+  }
 });
 console.log(firebase.auth());
 
