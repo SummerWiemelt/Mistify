@@ -7,7 +7,7 @@ import Main from "./components/main/Main.component";
 import { Provider } from "react-redux";
 import store from "./globals/store";
 import firebase from "firebase";
-import { loginUser } from "./actions/actions";
+import { loginUser, logoutUser } from "./actions/actions";
 
 // Configure Firebase.
 var config = {
@@ -22,7 +22,11 @@ var config = {
 };
 firebase.initializeApp(config);
 firebase.auth().onAuthStateChanged(function(user) {
-  store.dispatch(loginUser(user));
+  if (user) {
+    store.dispatch(loginUser(user));
+  } else {
+    store.dispatch(logoutUser());
+  }
 });
 console.log(firebase.auth());
 
