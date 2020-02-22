@@ -36,8 +36,8 @@ function renderOptions(props) {
 }
 
 class NewEditPlantPage extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     if (this.props && this.props.plant) {
       // Edit flow- plant already exists
       this.state = {
@@ -50,13 +50,17 @@ class NewEditPlantPage extends React.Component {
       let newPlant = new Plant();
 
       //default dropdown
-      newPlant.setSunPreference(SUN_PREFERENCES[0]);
-      newPlant.setWateringPreference(WATERING_PREFERENCES[0]);
+      newPlant.sunPreference = SUN_PREFERENCES[0];
+      newPlant.wateringPreference = WATERING_PREFERENCES[0];
       this.state = {
         plant: newPlant,
         error: null,
         isLoading: false
       };
+    }
+    if (this.props && this.props.user && this.props.user.currentUser) {
+      // Always assign the current user's UID to the plant's uid
+      this.state.plant.uid = this.props.user.currentUser.uid;
     }
   }
 
@@ -65,7 +69,6 @@ class NewEditPlantPage extends React.Component {
     this.setState({
       isLoading: true
     });
-    console.log("setState");
     if (this.state.plant.id) {
       // Modify / Edit plant
     } else {
@@ -84,9 +87,61 @@ class NewEditPlantPage extends React.Component {
     }
   };
 
-  handleInputChange = setValue => inputEvent => {
-    // Gets input from form
-    let newPlant = setValue(inputEvent.target.value);
+  onNameChange = inputEvent => {
+    let newPlant = {};
+    Object.assign(newPlant, this.state.plant, {
+      name: inputEvent.target.value
+    });
+    this.setState({
+      plant: newPlant
+    });
+  };
+
+  onSpeciesChange = inputEvent => {
+    let newPlant = {};
+    Object.assign(newPlant, this.state.plant, {
+      species: inputEvent.target.value
+    });
+    this.setState({
+      plant: newPlant
+    });
+  };
+
+  onLocationChange = inputEvent => {
+    let newPlant = {};
+    Object.assign(newPlant, this.state.plant, {
+      location: inputEvent.target.value
+    });
+    this.setState({
+      plant: newPlant
+    });
+  };
+
+  onDescriptionChange = inputEvent => {
+    let newPlant = {};
+    Object.assign(newPlant, this.state.plant, {
+      description: inputEvent.target.value
+    });
+    this.setState({
+      plant: newPlant
+    });
+  };
+
+  onWateringPreferenceChange = inputEvent => {
+    let newPlant = {};
+    Object.assign(newPlant, this.state.plant, {
+      wateringPreference: inputEvent.target.value
+    });
+    this.setState({
+      plant: newPlant
+    });
+  };
+
+  onSunPreferenceChange = inputEvent => {
+    let newPlant = {};
+    Object.assign(newPlant, this.state.plant, {
+      sunPreference: inputEvent.target.value
+    });
     this.setState({
       plant: newPlant
     });
@@ -107,6 +162,7 @@ class NewEditPlantPage extends React.Component {
   };
 
   render() {
+    console.log(this.state);
     if (this.state.error) {
       return <div>{this.state.error}</div>;
     } else if (this.state.isLoading) {
@@ -142,7 +198,7 @@ class NewEditPlantPage extends React.Component {
                     Name<span className='required'> *</span>
                   </Form.Label>
                   <Form.Control
-                    onChange={this.handleInputChange(this.state.plant.setName)}
+                    onChange={this.onNameChange}
                     defaultValue={this.state.name}
                     required
                     type='name'
@@ -153,7 +209,7 @@ class NewEditPlantPage extends React.Component {
                 <Form.Group type='text' controlid='species'>
                   <Form.Label className='label'>Species</Form.Label>
                   <Form.Control
-                    onChange={this.handleInputChange(this.state.plant.setSpecies)}
+                    onChange={this.onSpeciesChange}
                     defaultValue={this.state.species}
                     type='species'
                     placeholder='Ex: "Ruellia makoyana"'
@@ -163,7 +219,7 @@ class NewEditPlantPage extends React.Component {
                 <Form.Group type='text' controlid='location'>
                   <Form.Label className='label'>Location</Form.Label>
                   <Form.Control
-                    onChange={this.handleInputChange(this.state.plant.setLocation)}
+                    onChange={this.onLocationChange}
                     defaultValue={this.state.location}
                     type='location'
                     placeholder='Ex: "Upstairs office"'
@@ -177,9 +233,7 @@ class NewEditPlantPage extends React.Component {
                 <Form.Group type='text' controlid='description'>
                   <Form.Label className='label'>Description</Form.Label>
                   <Form.Control
-                    onChange={this.handleInputChange(
-                      this.state.plant.setDescription
-                    )}
+                    onChange={this.onDescriptionChange}
                     defaultValue={this.state.description}
                     as='textarea'
                     rows='3'
@@ -195,9 +249,7 @@ class NewEditPlantPage extends React.Component {
                 </Form.Label>
                 <Form.Control
                   required
-                  onChange={this.handleInputChange(
-                    this.state.plant.setWateringPreference
-                  )}
+                  onChange={this.onWateringPreferenceChange}
                   defaultValue={this.state.wateringPreference}
                   as='select'
                 >
@@ -210,9 +262,7 @@ class NewEditPlantPage extends React.Component {
                 </Form.Label>
                 <Form.Control
                   required
-                  onChange={this.handleInputChange(
-                    this.state.plant.setSunPreference
-                  )}
+                  onChange={this.onSunPreferenceChange}
                   defaultValue={this.state.sunPreference}
                   as='select'
                 >

@@ -14,12 +14,12 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Link } from "react-router-dom";
 
 class ListPlants extends React.Component {
-  // delete plant service 
+  // delete plant service
   onDeletePlant = plant => () => {
     deletePlant(plant.id);
   };
 
-  // card component 
+  // card component
   render() {
     if (this.props) {
       // mapping through the plants in the database
@@ -56,7 +56,7 @@ class ListPlants extends React.Component {
               </Card.Body>
               <Card.Footer>
                 <ListGroup variant='flush'>
-                  <ListGroup.Item>{plant.waterPreference}</ListGroup.Item>
+                  <ListGroup.Item>{plant.wateringPreference}</ListGroup.Item>
                   <ListGroup.Item>{plant.sunPreference}</ListGroup.Item>
                 </ListGroup>
               </Card.Footer>

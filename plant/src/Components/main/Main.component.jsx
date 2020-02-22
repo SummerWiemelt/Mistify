@@ -1,26 +1,25 @@
-import React from 'react';
+import React from "react";
 
-import './main.style.scss';
-import logo from '../../assets/plant-dark.svg';
-import HomePage from '../../pages/homePage/HomePage.jsx';
-import NewEditPlantPage from '../../pages/newEditPlantPage/NewEditPlantPage';
+import "./main.style.scss";
+import logo from "../../assets/plant-dark.svg";
+import HomePage from "../../pages/homePage/HomePage.jsx";
 
-import ConnectPlantsPage from '../../pages/plantsPage/ConnectPlantsPage';
-import ConnectLoginPage from '../../pages/loginPage/ConnectLoginPage';
+import ConnectPlantsPage from "../../pages/plantsPage/ConnectPlantsPage";
+import ConnectLoginPage from "../../pages/loginPage/ConnectLoginPage";
+import ConnectNewEditPlantPage from "../../pages/newEditPlantPage/ConnectNewEditPlantPage";
 
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { LinkContainer } from 'react-router-bootstrap';
-import PrivateRoute from '../privateRoute/PrivateRoute';
-import firebase from 'firebase';
+import Navbar from "react-bootstrap/Navbar";
+import Nav from "react-bootstrap/Nav";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
+import firebase from "firebase";
 
-import history from '../../globals/history';
-import ConnectPrivateRoute from '../privateRoute/ConnectPrivateRoute';
+import history from "../../globals/history";
+import ConnectPrivateRoute from "../privateRoute/ConnectPrivateRoute";
 
 function onLogout() {
-  firebase.auth().signOut()
-  window.location.reload()
+  firebase.auth().signOut();
+  window.location.reload();
 }
 
 function loginOrOut(props) {
@@ -45,10 +44,11 @@ class Main extends React.Component {
           collapseOnSelect
           expand='lg'
           bg='light'
-          variant='light'>
+          variant='light'
+        >
           <LinkContainer to='/'>
             <Navbar.Brand>
-              {' '}
+              {" "}
               <img
                 src={logo}
                 width='35'
@@ -78,7 +78,7 @@ class Main extends React.Component {
           />
           <ConnectPrivateRoute
             path='/newPlant'
-            render={props => <NewEditPlantPage {...props} />}
+            render={props => <ConnectNewEditPlantPage {...props} />}
           />
         </Switch>
       </Router>

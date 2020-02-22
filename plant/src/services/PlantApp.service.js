@@ -5,7 +5,7 @@ import { PLANTS_API_HOST_ADDRESS } from "../config";
 
 // Object Property Constants
 export function Plant() {
-  this.id = "";
+  this.id = ""; //plant id
   this.name = "";
   this.species = "";
   this.location = "";
@@ -13,34 +13,7 @@ export function Plant() {
   this.wateringPreference = "";
   this.sunPreference = "";
   this.main_img_url = "";
-  this.setId = newId => {
-    this.id = newId;
-    return this;
-  };
-  this.setName = newName => {
-    this.name = newName; //asigns newName to this.name
-    return this;
-  };
-  this.setSpecies = newSpecies => {
-    this.species = newSpecies;
-    return this;
-  };
-  this.setLocation = newLocation => {
-    this.location = newLocation;
-    return this;
-  };
-  this.setDescription = newDescription => {
-    this.description = newDescription;
-    return this;
-  };
-  this.setWateringPreference = newWateringPreference => {
-    this.waterPreference = newWateringPreference;
-    return this;
-  };
-  this.setSunPreference = newSunPreference => {
-    this.sunPreference = newSunPreference;
-    return this;
-  };
+  this.uid = "";
 
   // Local closure to prevent serialization
   let imageBase64String = "";
@@ -77,8 +50,6 @@ export const getAllPlants = async () => {
 };
 
 export const createNewPlant = async plant => {
-  console.log(plant);
-  console.log(JSON.stringify(plant));
   const request = new Request(`${PLANTS_API_HOST_ADDRESS}/plant`, {
     method: "POST",
     headers: {

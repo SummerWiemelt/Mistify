@@ -42,7 +42,6 @@ class PlantsPage extends React.Component {
   };
 
   render() {
-    console.log("rendering plants");
     let loadContent = () => {
       if (this.props.error) {
         return <div>{this.props.error}</div>;
