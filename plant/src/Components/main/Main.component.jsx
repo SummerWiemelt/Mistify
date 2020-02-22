@@ -1,21 +1,40 @@
-import React from "react";
+import React from 'react';
 
-import "./main.style.scss";
-import logo from "../../assets/plant-dark.svg";
-import HomePage from "../../pages/homePage/HomePage.jsx";
-import NewEditPlantPage from "../../pages/newEditPlantPage/NewEditPlantPage";
+import './main.style.scss';
+import logo from '../../assets/plant-dark.svg';
+import HomePage from '../../pages/homePage/HomePage.jsx';
+import NewEditPlantPage from '../../pages/newEditPlantPage/NewEditPlantPage';
 
-import ConnectPlantsPage from "../../pages/plantsPage/ConnectPlantsPage";
-import LoginPage from "../../pages/loginPage/LoginPage";
+import ConnectPlantsPage from '../../pages/plantsPage/ConnectPlantsPage';
+import ConnectLoginPage from '../../pages/loginPage/ConnectLoginPage';
 
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
-import PrivateRoute from "../privateRoute/PrivateRoute";
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
+import PrivateRoute from '../privateRoute/PrivateRoute';
+import firebase from 'firebase';
 
-import history from "../../globals/history";
-import ConnectPrivateRoute from "../privateRoute/ConnectPrivateRoute";
+import history from '../../globals/history';
+import ConnectPrivateRoute from '../privateRoute/ConnectPrivateRoute';
+
+function onLogout() {
+  firebase.auth().signOut()
+  window.location.reload()
+}
+
+function loginOrOut(props) {
+  const { user } = props;
+  const loggedIn = user && user.loggedIn;
+  if (loggedIn) {
+    return <Nav.Link onClick={onLogout}>Logout</Nav.Link>;
+  } else
+    return (
+      <LinkContainer to='/login'>
+        <Nav.Link>Login</Nav.Link>
+      </LinkContainer>
+    );
+}
 
 class Main extends React.Component {
   render() {
@@ -26,11 +45,10 @@ class Main extends React.Component {
           collapseOnSelect
           expand='lg'
           bg='light'
-          variant='light'
-        >
+          variant='light'>
           <LinkContainer to='/'>
             <Navbar.Brand>
-              {" "}
+              {' '}
               <img
                 src={logo}
                 width='35'
@@ -47,15 +65,13 @@ class Main extends React.Component {
               <LinkContainer to='/plants'>
                 <Nav.Link>Plants</Nav.Link>
               </LinkContainer>
-              <LinkContainer to='/login'>
-                <Nav.Link>Login</Nav.Link>
-              </LinkContainer>
+              {loginOrOut(this.props)}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
         <Switch>
           <Route path='/' exact render={() => <HomePage />} />
-          <Route path='/login' render={() => <LoginPage />} />
+          <Route path='/login' render={() => <ConnectLoginPage />} />
           <ConnectPrivateRoute
             path='/plants'
             render={props => <ConnectPlantsPage {...props} />}
@@ -69,4 +85,5 @@ class Main extends React.Component {
     );
   }
 }
+
 export default Main;

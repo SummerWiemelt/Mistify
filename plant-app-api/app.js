@@ -9,6 +9,7 @@ const db = new Firestore({
 const PLANT_COLLECTION = "plants";
 const plantsCollection = db.collection(PLANT_COLLECTION);
 
+// api protection 
 const app = express();
 app.use(express.json());
 app.use(cors());
