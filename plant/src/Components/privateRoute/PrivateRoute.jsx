@@ -12,7 +12,6 @@ function PrivateRoute(props) {
   const { user } = props;
   const loggedIn = user && user.loggedIn;
   if (!loggedIn) {
-    console.log("Rendering when I shouldn't!!!");
     return <Redirect to={{ pathname: "/login", state: { from: props.location } }} />;
   } else {
     return <Route {...props} />;

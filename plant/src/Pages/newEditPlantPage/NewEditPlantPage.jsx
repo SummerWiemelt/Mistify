@@ -1,31 +1,31 @@
-import React from "react";
+import React from 'react';
 
-import history from "../../globals/history";
-import "./newEditPlantPage.style.scss";
-import { Plant, createNewPlant } from "../../services/PlantApp.service";
+import history from '../../globals/history';
+import './newEditPlantPage.style.scss';
+import { Plant, createNewPlant } from '../../services/PlantApp.service';
 
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 // Object Property Constants
 const WATERING_PREFERENCES = [
-  "When dry to touch",
-  "Thoroughly, until drained",
-  "Immersed in water",
-  "From bottom",
-  "Mist"
+  'When dry to touch',
+  'Thoroughly, until drained',
+  'Immersed in water',
+  'From bottom',
+  'Mist'
 ];
 
 const SUN_PREFERENCES = [
-  "Full Sun",
-  "Partial Sun",
-  "Partial Shade",
-  "Indirect Sun",
-  "Full Shade"
+  'Full Sun',
+  'Partial Sun',
+  'Partial Shade',
+  'Indirect Sun',
+  'Full Shade'
 ];
 
 // maps through dropdown options
@@ -76,7 +76,7 @@ class NewEditPlantPage extends React.Component {
       createNewPlant(this.state.plant).then(result => {
         if (result.success) {
           // pushes new plant to plants
-          this.props.history.push("/plants");
+          this.props.history.push('/plants');
         } else {
           this.setState({
             isLoading: false,
@@ -180,19 +180,6 @@ class NewEditPlantPage extends React.Component {
           <Form onSubmit={this.onNewEditPlant}>
             <Form.Row>
               <Col xs={12} md={6}>
-                <div className='label'>
-                  Upload image section<span className='required'> *</span>
-                </div>
-                <label htmlFor='plantFile'>Select an image:</label>
-                <input
-                  onChange={this.onPlantImageChanged}
-                  type='file'
-                  id='plantFile'
-                  name='plantImage'
-                />
-                {renderPlantImage(this.state.plant)}
-              </Col>
-              <Col xs={12} md={6}>
                 <Form.Group type='text' controlid='name'>
                   <Form.Label className='label'>
                     Name<span className='required'> *</span>
@@ -227,6 +214,19 @@ class NewEditPlantPage extends React.Component {
                   />
                 </Form.Group>
               </Col>
+              <Col xs={12} md={6}>
+                <div className='label'>
+                  Upload an image<span className='required'> *</span>
+                </div>
+                <label htmlFor='plantFile'></label>
+                <input
+                  onChange={this.onPlantImageChanged}
+                  type='file'
+                  id='plantFile'
+                  name='plantImage'
+                />
+                {renderPlantImage(this.state.plant)}
+              </Col>
             </Form.Row>
             <Form.Row>
               <Col>
@@ -251,8 +251,7 @@ class NewEditPlantPage extends React.Component {
                   required
                   onChange={this.onWateringPreferenceChange}
                   defaultValue={this.state.wateringPreference}
-                  as='select'
-                >
+                  as='select'>
                   {renderOptions(WATERING_PREFERENCES)}
                 </Form.Control>
               </div>
@@ -264,8 +263,7 @@ class NewEditPlantPage extends React.Component {
                   required
                   onChange={this.onSunPreferenceChange}
                   defaultValue={this.state.sunPreference}
-                  as='select'
-                >
+                  as='select'>
                   {renderOptions(SUN_PREFERENCES)}
                 </Form.Control>
               </div>
@@ -277,8 +275,7 @@ class NewEditPlantPage extends React.Component {
               <Button
                 className='submit-button label'
                 variant='outline-dark'
-                type='submit'
-              >
+                type='submit'>
                 Submit
               </Button>
             </Form.Row>
@@ -295,9 +292,22 @@ function renderPlantImage(plant) {
   }
   let imageBase64String = plant.getBase64String();
   if (imageBase64String && imageBase64String.length > 0) {
-    return <img id='profileImage' src={imageBase64String} className='center' />;
+    //if it exists
+    return (
+      <img
+        id='profileImage'
+        src={imageBase64String}
+        className='center-upload-image'
+      />
+    );
   } else if (plant.main_img_url && plant.main_img_url.length > 0) {
-    return <img id='profileImage' src={plant.main_img_url} className='center' />;
+    return (
+      <img
+        id='profileImage'
+        src={plant.main_img_url}
+        className='center-upload-image'
+      />
+    );
   } else {
     return null;
   }
