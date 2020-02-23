@@ -1,7 +1,39 @@
 import store from "../globals/store";
-import history from "../globals/history";
+import axios from "axios";
 import { loadingPlants, loadingPlantsError, loadedPlants } from "../actions/actions";
 import { PLANTS_API_HOST_ADDRESS } from "../config";
+
+store.subscribe(storeAxiosListener); // Everytime store changes, execute listener function
+
+const plantAppApi = axios.create({
+  baseURL: PLANTS_API_HOST_ADDRESS,
+  headers: {
+    "Content-Type": "application/json"
+  }
+});
+
+let idToken = null;
+function storeAxiosListener() {
+  const state = store.getState();
+  if (state.user.loggedIn) {
+    state.user.currentUser.getIdToken().then(function(newIdToken) {
+      idToken = newIdToken;
+    });
+  }
+}
+
+plantAppApi.interceptors.request.use(
+  req => {
+    if (!req.params) {
+      req.params = {};
+    }
+    req.params["idToken"] = idToken;
+    return req;
+  },
+  error => {
+    console.log("Error:", error);
+  }
+);
 
 // Object Property Constants
 export function Plant() {
@@ -27,21 +59,19 @@ export function Plant() {
 
 export const getAllPlants = async () => {
   store.dispatch(loadingPlants());
-  const request = new Request(`${PLANTS_API_HOST_ADDRESS}/plants`);
-  await fetch(request)
+  await plantAppApi
+    .get("/plants")
     .then(response => {
-      response.json().then(plants_array => {
-        let plants = plants_array.map(plant_data => {
-          let plant = new Plant();
-          let keys = Object.keys(plant_data);
-          for (var i = 0; i < keys.length; i++) {
-            plant[keys[i]] = plant_data[keys[i]];
-            // plant.id = plant_data.id etc, for each property
-          }
-          return plant;
-        });
-        store.dispatch(loadedPlants(plants));
+      let plants = response.data.map(plant_data => {
+        let plant = new Plant();
+        let keys = Object.keys(plant_data);
+        for (var i = 0; i < keys.length; i++) {
+          plant[keys[i]] = plant_data[keys[i]];
+          // plant.id = plant_data.id etc, for each property
+        }
+        return plant;
       });
+      store.dispatch(loadedPlants(plants));
     })
     .catch(err => {
       console.log("ERROR: ", err);
@@ -50,16 +80,8 @@ export const getAllPlants = async () => {
 };
 
 export const createNewPlant = async plant => {
-  const request = new Request(`${PLANTS_API_HOST_ADDRESS}/plant`, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(plant)
-  });
-
-  return await fetch(request)
+  return await plantAppApi
+    .post("/plant", plant)
     .then(response => {
       return {
         success: true
@@ -75,11 +97,8 @@ export const createNewPlant = async plant => {
 };
 
 export const deletePlant = async plantId => {
-  const request = new Request(`${PLANTS_API_HOST_ADDRESS}/plant/${plantId}`, {
-    method: "DELETE"
-  });
-
-  return await fetch(request)
+  return await plantAppApi
+    .delete(`/plant/${plantId}`)
     .then(response => {
       getAllPlants();
     })

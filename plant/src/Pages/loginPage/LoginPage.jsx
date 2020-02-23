@@ -1,27 +1,39 @@
 // TO DO:
 // Change navagation 'login' to 'logout' when user is currently logged in
 
-import React from 'react';
+import React from "react";
 
-import './LoginPage.style.scss';
+import "./LoginPage.style.scss";
 
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Container from 'react-bootstrap/Container';
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
 import { Redirect } from "react-router-dom";
 
 // Import FirebaseAuth and firebase.
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase from 'firebase/app';
-import fire from '../../config/fire';
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import firebase from "firebase/app";
+import { initializeApp } from "firebase/app";
 
+// Configure Firebase.
+const config = {
+  apiKey: "AIzaSyDyN3MYYPqxLa4IzzBO226XfqVqxWZqBfQ",
+  authDomain: "plant-app-266923.firebaseapp.com",
+  databaseURL: "https://plant-app-266923.firebaseio.com",
+  projectId: "plant-app-266923",
+  storageBucket: "plant-app-266923.appspot.com",
+  messagingSenderId: "324684153593",
+  appId: "1:324684153593:web:3dfff9d88582401f051828",
+  measurementId: "G-Y0P2838D6Y"
+};
+initializeApp(config);
 
 // Configure FirebaseUI.
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
-  signInFlow: 'popup',
+  signInFlow: "popup",
   // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: '/plants',
+  signInSuccessUrl: "/plants",
   // We will display Google and Facebook as auth providers.
   signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID]
 };
@@ -60,14 +72,18 @@ class LoginPage extends React.Component {
       [e.target.name] : e.target.value
     })
   }
-  */ 
+  */
 
   render() {
     console.log(this.props);
     const { user } = this.props;
     const loggedIn = user && user.loggedIn;
     if (loggedIn) {
-      return <Redirect to={{ pathname: "/plants", state: { from: this.props.location } }} />;
+      return (
+        <Redirect
+          to={{ pathname: "/plants", state: { from: this.props.location } }}
+        />
+      );
     } else {
       return (
         <Container className='login-container'>
@@ -107,7 +123,7 @@ class LoginPage extends React.Component {
               disabled
               /* firebase custom auth
               onClick={this.login} */
-              >
+            >
               Login
             </Button>
             <Button
@@ -117,15 +133,13 @@ class LoginPage extends React.Component {
               className='login-btn bold'
               disabled
               /* firebase custom auth
-              onClick={this.signup} */> 
+              onClick={this.signup} */
+            >
               Sign Up
             </Button>
           </Form>
           <div className='login-sub-title'>Or login with your Google account.</div>
-          <StyledFirebaseAuth
-            uiConfig={uiConfig}
-            firebaseAuth={firebase.auth()}
-          />
+          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
         </Container>
       );
     }
