@@ -3,8 +3,11 @@ import axios from "axios";
 import { loadingPlants, loadingPlantsError, loadedPlants } from "../actions/actions";
 import { PLANTS_API_HOST_ADDRESS } from "../config";
 
+
+// Authentication 
 store.subscribe(storeAxiosListener); // Everytime store changes, execute listener function
 
+// authenticate each session by idToken 
 const plantAppApi = axios.create({
   baseURL: PLANTS_API_HOST_ADDRESS,
   headers: {
@@ -22,6 +25,7 @@ function storeAxiosListener() {
   }
 }
 
+// auth idToken before sending a response 
 plantAppApi.interceptors.request.use(
   req => {
     if (!req.params) {
@@ -57,6 +61,8 @@ export function Plant() {
   };
 }
 
+
+// Get all plants from api 
 export const getAllPlants = async () => {
   store.dispatch(loadingPlants());
   await plantAppApi
@@ -79,6 +85,7 @@ export const getAllPlants = async () => {
     });
 };
 
+// Create new plant 
 export const createNewPlant = async plant => {
   return await plantAppApi
     .post("/plant", plant)
@@ -96,6 +103,7 @@ export const createNewPlant = async plant => {
     });
 };
 
+// Delete plant
 export const deletePlant = async plantId => {
   return await plantAppApi
     .delete(`/plant/${plantId}`)

@@ -8,6 +8,10 @@ import Spinner from "react-bootstrap/Spinner";
 import { getAllPlants } from "../../services/PlantApp.service";
 import firebase from "firebase";
 
+
+// combines AddSearch and ListPlants in order to search the plants 
+
+
 class PlantsPage extends React.Component {
   constructor() {
     super();
@@ -20,6 +24,7 @@ class PlantsPage extends React.Component {
     getAllPlants();
   }
 
+  // Search
   onSearchChanged = inputEvent => {
     this.setState({
       searchFilter: inputEvent.target.value.toLowerCase()
@@ -43,9 +48,11 @@ class PlantsPage extends React.Component {
 
   render() {
     let loadContent = () => {
+      // error if failed 
       if (this.props.error) {
         return <div>{this.props.error}</div>;
       }
+      // spin while loading
       if (!this.props.isLoaded) {
         return (
           <Spinner variant='secondary' animation='border' role='status'>
@@ -53,6 +60,7 @@ class PlantsPage extends React.Component {
           </Spinner>
         );
       } else {
+        //return the list of plants with the filtered results 
         return <ListPlants plants={this.filterResults()} />;
       }
     };

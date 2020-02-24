@@ -35,6 +35,7 @@ function renderOptions(props) {
   });
 }
 
+// set init state for new plant or edit plant 
 class NewEditPlantPage extends React.Component {
   constructor(props) {
     super(props);
@@ -64,6 +65,7 @@ class NewEditPlantPage extends React.Component {
     }
   }
 
+  // if a plant already exists (by id) - modify, otherwise create new plant 
   onNewEditPlant = formEvent => {
     formEvent.preventDefault(); // Prevent page reload
     this.setState({
@@ -75,7 +77,7 @@ class NewEditPlantPage extends React.Component {
       // createNewPlant from PlantApp.service
       createNewPlant(this.state.plant).then(result => {
         if (result.success) {
-          // pushes new plant to plants
+          // pushes new plant to /plants
           this.props.history.push('/plants');
         } else {
           this.setState({
@@ -87,12 +89,16 @@ class NewEditPlantPage extends React.Component {
     }
   };
 
+  // target.value functions for form 
+  // must do Object.assign because we need to create a new Plant object each time- rule of immutability 
   onNameChange = inputEvent => {
     let newPlant = {};
     Object.assign(newPlant, this.state.plant, {
+      // target value/ character
       name: inputEvent.target.value
     });
     this.setState({
+      // assign it to the plants state 
       plant: newPlant
     });
   };

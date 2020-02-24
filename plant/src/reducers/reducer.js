@@ -1,3 +1,6 @@
+// How the store changes in response to actions  
+
+//actions
 import {
   LOADED_PLANTS,
   LOADING_PLANTS,
@@ -6,6 +9,7 @@ import {
   LOGOUT_USER
 } from "../actions/actions";
 
+// default state 
 const defaultState = {
   user: {
     loggedIn: false,
@@ -17,6 +21,7 @@ const defaultState = {
     items: []
   }
 };
+
 
 export const plantApp = (state, action) => {
   switch (action.type) {

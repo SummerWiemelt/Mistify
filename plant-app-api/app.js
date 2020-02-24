@@ -2,16 +2,17 @@ const express = require("express");
 const Firestore = require("@google-cloud/firestore");
 const cors = require("cors");
 
+// config firestore db 
 const db = new Firestore({
   projectId: "plant-app-266923",
   keyFilename: "./plant-app-firebase-sa-creds.json"
 });
 
+// define collections in db 
 const USER_COLLECTION = "users";
 const PLANT_COLLECTION = "plants";
 const DatabaseNavigator = (function() {
   this.baseUserCollection = db.collection(USER_COLLECTION);
-
   this.getUserCollection = async uid => {
     const userRef = await this.baseUserCollection.doc(uid);
     const item = await userRef.get();
@@ -28,7 +29,6 @@ const DatabaseNavigator = (function() {
         });
     }
   };
-
   this.getPlantsCollection = async uid => {
     const userCollection = await this.getUserCollection(uid);
     return await userCollection.collection(PLANT_COLLECTION);
@@ -37,6 +37,7 @@ const DatabaseNavigator = (function() {
   return this;
 })();
 
+// firebase authentication - init
 const admin = require("firebase-admin");
 const serviceAccount = require("./plant-app-firebase-sa-creds.json");
 // const serviceAccount = require("./service-account.json");
@@ -71,7 +72,7 @@ function cleanInputBody(plant) {
   return plant;
 }
 
-// Middleware
+// Middleware - to authenticate via idToken
 function check_and_append_user(req, res, next) {
   // post, get, put, delete
   if (req && req.query && req.query.idToken) {
@@ -99,6 +100,9 @@ app.use(check_and_append_user);
 app.get("/", (req, res) => {
   res.send("This is the plant app api!");
 });
+
+
+// HTTP Methods 
 
 // GET
 
