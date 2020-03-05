@@ -24,6 +24,12 @@ class ListPlants extends React.Component {
     if (this.props) {
       // mapping through the plants in the database
       const plants = this.props.plants.map(plant => {
+        let plantImageSrc = null;
+        if (plant.main_img_url) {
+          plantImageSrc = plant.main_img_url;
+        } else {
+          plantImageSrc = plantImage;
+        }
         return (
           <Col key={plant.id} className='card-col' lg={4} md={6}>
             <Card className='card'>
@@ -36,7 +42,7 @@ class ListPlants extends React.Component {
                   x
                 </Button>
               </div>
-              <Card.Img className='card-img' variant='top' src={plantImage} />
+              <Card.Img className='card-img' variant='top' src={plantImageSrc} />
               <Card.Body>
                 <Card.Title>
                   <span className='bold'>{plant.name}</span>

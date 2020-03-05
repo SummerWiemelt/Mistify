@@ -1,31 +1,35 @@
-import React from 'react';
+import React from "react";
 
-import history from '../../globals/history';
-import './newEditPlantPage.style.scss';
-import { Plant, createNewPlant } from '../../services/PlantApp.service';
+import history from "../../globals/history";
+import "./newEditPlantPage.style.scss";
+import {
+  Plant,
+  createNewPlant,
+  updatePlantImage
+} from "../../services/PlantApp.service";
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Spinner from "react-bootstrap/Spinner";
 
 // Object Property Constants
 const WATERING_PREFERENCES = [
-  'When dry to touch',
-  'Thoroughly, until drained',
-  'Immersed in water',
-  'From bottom',
-  'Mist'
+  "When dry to touch",
+  "Thoroughly, until drained",
+  "Immersed in water",
+  "From bottom",
+  "Mist"
 ];
 
 const SUN_PREFERENCES = [
-  'Full Sun',
-  'Partial Sun',
-  'Partial Shade',
-  'Indirect Sun',
-  'Full Shade'
+  "Full Sun",
+  "Partial Sun",
+  "Partial Shade",
+  "Indirect Sun",
+  "Full Shade"
 ];
 
 // maps through dropdown options
@@ -35,7 +39,7 @@ function renderOptions(props) {
   });
 }
 
-// set init state for new plant or edit plant 
+// set init state for new plant or edit plant
 class NewEditPlantPage extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +48,8 @@ class NewEditPlantPage extends React.Component {
       this.state = {
         plant: this.props.plant,
         error: null,
-        isLoading: false
+        isLoading: false,
+        newImageFile: null
       };
     } else {
       // New flow- creating new plant
@@ -56,7 +61,8 @@ class NewEditPlantPage extends React.Component {
       this.state = {
         plant: newPlant,
         error: null,
-        isLoading: false
+        isLoading: false,
+        newImageFile: null
       };
     }
     if (this.props && this.props.user && this.props.user.currentUser) {
@@ -65,7 +71,7 @@ class NewEditPlantPage extends React.Component {
     }
   }
 
-  // if a plant already exists (by id) - modify, otherwise create new plant 
+  // if a plant already exists (by id) - modify, otherwise create new plant
   onNewEditPlant = formEvent => {
     formEvent.preventDefault(); // Prevent page reload
     this.setState({
@@ -75,10 +81,10 @@ class NewEditPlantPage extends React.Component {
       // Modify / Edit plant
     } else {
       // createNewPlant from PlantApp.service
-      createNewPlant(this.state.plant).then(result => {
+      createNewPlant(this.state.plant, this.state.newImageFile).then(result => {
         if (result.success) {
           // pushes new plant to /plants
-          this.props.history.push('/plants');
+          this.props.history.push("/plants");
         } else {
           this.setState({
             isLoading: false,
@@ -89,8 +95,8 @@ class NewEditPlantPage extends React.Component {
     }
   };
 
-  // target.value functions for form 
-  // must do Object.assign because we need to create a new Plant object each time- rule of immutability 
+  // target.value functions for form
+  // must do Object.assign because we need to create a new Plant object each time- rule of immutability
   onNameChange = inputEvent => {
     let newPlant = {};
     Object.assign(newPlant, this.state.plant, {
@@ -98,7 +104,7 @@ class NewEditPlantPage extends React.Component {
       name: inputEvent.target.value
     });
     this.setState({
-      // assign it to the plants state 
+      // assign it to the plants state
       plant: newPlant
     });
   };
@@ -156,14 +162,18 @@ class NewEditPlantPage extends React.Component {
   onPlantImageChanged = event => {
     //files is defined, and there's at least one
     if (event.target.files && event.target.files[0]) {
+      const imageFile = event.target.files[0];
       var reader = new FileReader();
       reader.onload = e => {
-        this.state.plant.setBase64String(e.target.result);
+        let newPlant = {};
+        Object.assign(newPlant, this.state.plant);
+        newPlant.setBase64String(e.target.result);
         this.setState({
-          plant: this.state.plant
+          plant: newPlant,
+          newImageFile: imageFile
         });
       };
-      reader.readAsDataURL(event.target.files[0]);
+      reader.readAsDataURL(imageFile);
     }
   };
 
@@ -257,7 +267,8 @@ class NewEditPlantPage extends React.Component {
                   required
                   onChange={this.onWateringPreferenceChange}
                   defaultValue={this.state.wateringPreference}
-                  as='select'>
+                  as='select'
+                >
                   {renderOptions(WATERING_PREFERENCES)}
                 </Form.Control>
               </div>
@@ -269,7 +280,8 @@ class NewEditPlantPage extends React.Component {
                   required
                   onChange={this.onSunPreferenceChange}
                   defaultValue={this.state.sunPreference}
-                  as='select'>
+                  as='select'
+                >
                   {renderOptions(SUN_PREFERENCES)}
                 </Form.Control>
               </div>
@@ -281,7 +293,8 @@ class NewEditPlantPage extends React.Component {
               <Button
                 className='submit-button label'
                 variant='outline-dark'
-                type='submit'>
+                type='submit'
+              >
                 Submit
               </Button>
             </Form.Row>

@@ -1,14 +1,17 @@
 const express = require("express");
 const Firestore = require("@google-cloud/firestore");
 const cors = require("cors");
+const admin = require("firebase-admin");
+const serviceAccount = require("./plant-app-firebase-sa-creds.json");
+const fileUpload = require("express-fileupload");
 
-// config firestore db 
+// config firestore db
 const db = new Firestore({
   projectId: "plant-app-266923",
   keyFilename: "./plant-app-firebase-sa-creds.json"
 });
 
-// define collections in db 
+// define collections in db
 const USER_COLLECTION = "users";
 const PLANT_COLLECTION = "plants";
 const DatabaseNavigator = (function() {
@@ -17,12 +20,15 @@ const DatabaseNavigator = (function() {
     const userRef = await this.baseUserCollection.doc(uid);
     const item = await userRef.get();
     if (item.exists) {
+      // user exists
       return userRef;
     } else {
+      // If user doesn't exist, create them and return
       userRef
         .set({})
-        .then(res => {
-          return userRef;
+        .then(async res => {
+          const newUserRef = await this.baseUserCollection.doc(uid);
+          return newUserRef;
         })
         .catch(error => {
           throw new Error(error);
@@ -37,9 +43,34 @@ const DatabaseNavigator = (function() {
   return this;
 })();
 
-// firebase authentication - init
-const admin = require("firebase-admin");
-const serviceAccount = require("./plant-app-firebase-sa-creds.json");
+// Manage images for users
+const StorageNavigator = (function() {
+  this.storageRef = null;
+  this.getStorageRef = uid => {
+    if (!this.storageRef) {
+      this.storageRef = admin.storage().ref();
+    }
+    return this.storageRef;
+  };
+  this.getImageRef = async (uid, imageId) => {
+    const storageRef = this.getStorageRef(uid);
+    const imageRef = storageRef.child(`/users/${uid}/${imageId}`);
+    return imageRef;
+  };
+  this.uploadImage = async (uid, imageId, unitArray) => {
+    const imageRef = await this.getImageRef(uid, imageId);
+    imageRef
+      .put(unitArray)
+      .then(snapshot => {
+        return true;
+      })
+      .catch(error => {
+        return false;
+      });
+  };
+  return this;
+})();
+
 // const serviceAccount = require("./service-account.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -49,9 +80,15 @@ admin.initializeApp({
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(
+  fileUpload({
+    limits: { fileSize: 10 * 1024 * 1024 }
+  })
+);
 
 // Error patterns
 const RESOURCE_CREATED = 201;
+const MALFORMED_BODY = 400;
 const NOT_FOUND_STATUS_CODE = 404;
 const FORBIDDEN_STATUS_CODE = 403;
 const FORBIDDEN_MESSAGE =
@@ -101,8 +138,7 @@ app.get("/", (req, res) => {
   res.send("This is the plant app api!");
 });
 
-
-// HTTP Methods 
+// HTTP Methods
 
 // GET
 
@@ -189,11 +225,15 @@ app.put("/plant/:plantid", (req, res) => {
 
 // Create a plant
 app.post("/plant", (req, res) => {
+  if (req.body && Object.keys(req.body) > 0) {
+    res.status(MALFORMED_BODY);
+    res.send(makeErrorResponse("Body must contain plant information"));
+  }
   const newPlant = cleanInputBody(req.body);
   DatabaseNavigator.getPlantsCollection(req.user.uid).then(collection => {
     collection
       .add(newPlant)
-      .then(docRef => {
+      .then(async docRef => {
         res.status(RESOURCE_CREATED);
         res.send(docRef.id);
       })
