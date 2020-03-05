@@ -4,9 +4,11 @@
 }
 .card-img {
   position: relative;
+  height: 400px;
+  object-fit: cover;
 }
 .card {
-  height: 100%; // keeps the cards the same height - important 
+  height: 100%; 
   width: 100%;
 }
 .button-parent {

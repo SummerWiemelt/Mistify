@@ -138,6 +138,7 @@ export const createNewPlant = async (plant, newImageFile) => {
     });
 };
 
+// Update plant
 export const updatePlant = async plant => {
   console.log("plant");
   console.log(plant);

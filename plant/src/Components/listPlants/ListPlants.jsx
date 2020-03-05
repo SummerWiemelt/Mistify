@@ -1,7 +1,6 @@
 import React from "react";
 
 import "./listPlants.style.scss";
-import plantImage from "../../assets/plant-test.jpg";
 import { deletePlant } from "../../services/PlantApp.service";
 
 import Container from "react-bootstrap/Container";
@@ -28,7 +27,7 @@ class ListPlants extends React.Component {
         if (plant.main_img_url) {
           plantImageSrc = plant.main_img_url;
         } else {
-          plantImageSrc = plantImage;
+          plantImageSrc = null;
         }
         return (
           <Col key={plant.id} className='card-col' lg={4} md={6}>
@@ -66,11 +65,7 @@ class ListPlants extends React.Component {
                   <ListGroup.Item>{plant.sunPreference}</ListGroup.Item>
                 </ListGroup>
               </Card.Footer>
-              <Link to='/newPlant/'>
-                <Button className='view-plant-button' variant='outline-dark'>
-                  Edit Plant
-                </Button>
-              </Link>
+             
             </Card>
           </Col>
         );
@@ -84,3 +79,9 @@ class ListPlants extends React.Component {
   }
 }
 export default ListPlants;
+
+// <Link to='/newPlant/'>
+// <Button className='view-plant-button' variant='outline-dark' disabled>
+//   Edit Plant
+// </Button>
+// </Link>

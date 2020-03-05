@@ -56,7 +56,7 @@ class Main extends React.Component {
                 className='d-inline-block align-top nav-logo'
                 alt='logo'
               />
-              <span className='nav-title'>Mystify</span>
+              <span className='nav-title'>Mistify</span>
             </Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls='responsive-navbar-nav' />
